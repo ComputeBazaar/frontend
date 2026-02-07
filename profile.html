@@ -49,6 +49,8 @@
         }
     </style>
 </head>
+<script src="./main.js"></script>
+<script src="./pages.js"></script>
 <body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen flex">
 <aside class="w-64 border-r border-slate-200 dark:border-slate-800 bg-white dark:bg-[#111318] flex flex-col h-screen sticky top-0">
 <div class="p-6 flex items-center gap-3">
@@ -61,21 +63,21 @@
 </div>
 </div>
 <nav class="flex-1 px-4 space-y-1">
-<a class="flex items-center gap-3 px-3 py-2 text-slate-600 dark:text-[#9da6b9] hover:bg-slate-100 dark:hover:bg-[#282e39] rounded-lg transition-colors group" href="#">
+<a class="flex items-center gap-3 px-3 py-2 text-slate-600 dark:text-[#9da6b9] hover:bg-slate-100 dark:hover:bg-[#282e39] rounded-lg transition-colors group" href="#" onclick="window.location.href='loggedIn.html';">
 <span class="material-symbols-outlined text-slate-400 group-hover:text-primary transition-colors">dashboard</span>
 <span class="text-sm font-medium">Dashboard</span>
 </a>
-<a class="flex items-center gap-3 px-3 py-2 text-slate-600 dark:text-[#9da6b9] hover:bg-slate-100 dark:hover:bg-[#282e39] rounded-lg transition-colors group" href="#">
+<a class="flex items-center gap-3 px-3 py-2 text-slate-600 dark:text-[#9da6b9] hover:bg-slate-100 dark:hover:bg-[#282e39] rounded-lg transition-colors group" href="#"  onclick="window.location.href='logs.html';">
 <span class="material-symbols-outlined text-slate-400 group-hover:text-primary transition-colors">receipt_long</span>
 <span class="text-sm font-medium">Usage Logs</span>
 </a>
-<a class="flex items-center gap-3 px-3 py-2 text-slate-600 dark:text-[#9da6b9] hover:bg-slate-100 dark:hover:bg-[#282e39] rounded-lg transition-colors group" href="#">
+<a class="flex items-center gap-3 px-3 py-2 text-slate-600 dark:text-[#9da6b9] hover:bg-slate-100 dark:hover:bg-[#282e39] rounded-lg transition-colors group" href="#"  onclick="window.location.href='script.html';">
 <span class="material-symbols-outlined text-slate-400 group-hover:text-primary transition-colors">code</span>
 <span class="text-sm font-medium">Script Management</span>
 </a>
-<a class="flex items-center gap-3 px-3 py-2 text-slate-600 dark:text-[#9da6b9] hover:bg-slate-100 dark:hover:bg-[#282e39] rounded-lg transition-colors group" href="#">
+<a class="flex items-center gap-3 px-3 py-2 text-slate-600 dark:text-[#9da6b9] hover:bg-slate-100 dark:hover:bg-[#282e39] rounded-lg transition-colors group" href="#" onclick="window.location.href='guest.html';">
 <span class="material-symbols-outlined text-slate-400 group-hover:text-primary transition-colors">database</span>
-<span class="text-sm font-medium">Active Servers</span>
+<span class="text-sm font-medium" id="activeServers">Active Servers</span>
 </a>
 <div class="pt-4 pb-2 px-3">
 <p class="text-[10px] uppercase tracking-widest text-slate-400 font-bold">Preferences</p>
@@ -84,7 +86,7 @@
 <span class="material-symbols-outlined">manage_accounts</span>
 <span class="text-sm font-medium">Account Settings</span>
 </a>
-<a class="flex items-center gap-3 px-3 py-2 text-rose-500 hover:bg-rose-500/10 rounded-lg transition-colors group mt-4" href="#">
+<a id="logout-btn" class="flex items-center gap-3 px-3 py-2 text-rose-500 hover:bg-rose-500/10 rounded-lg transition-colors group mt-4" href="#" onclick="logout()">
 <span class="material-symbols-outlined text-rose-500">logout</span>
 <span class="text-sm font-medium">Logout</span>
 </a>
@@ -118,9 +120,9 @@
 <label class="text-xs font-bold uppercase tracking-wider text-slate-400">Email Address</label>
 <input id="user-email" class="w-full bg-slate-50 dark:bg-[#1c222d] border-slate-200 dark:border-slate-700 rounded-lg px-4 py-2.5 text-sm focus:ring-primary focus:border-primary" type="email" value="alex.rivera@example.com"/>
 </div>
-<div class="flex items-end col-span-1 md:col-span-2">
-<button class="bg-primary hover:bg-primary/90 text-white px-6 py-2.5 rounded-lg text-sm font-bold transition-colors shadow-lg shadow-primary/20">Update Profile</button>
-</div>
+<!-- <div class="flex items-end col-span-1 md:col-span-2"> -->
+<!-- <button class="bg-primary hover:bg-primary/90 text-white px-6 py-2.5 rounded-lg text-sm font-bold transition-colors shadow-lg shadow-primary/20">Update Profile</button> -->
+<!-- </div> -->
 </div>
 </div>
 <div class="bg-white dark:bg-[#111318] border border-slate-200 dark:border-[#3b4354] rounded-xl shadow-sm overflow-hidden">
@@ -147,7 +149,7 @@
 </button>
 </div>
 </div>
-<button class="px-4 py-2 border border-slate-200 dark:border-slate-700 bg-white dark:bg-[#111318] rounded-lg text-sm font-bold hover:bg-slate-50 dark:hover:bg-[#282e39] transition-colors flex items-center gap-2">
+<button id="regenKey" class="px-4 py-2 border border-slate-200 dark:border-slate-700 bg-white dark:bg-[#111318] rounded-lg text-sm font-bold hover:bg-slate-50 dark:hover:bg-[#282e39] transition-colors flex items-center gap-2">
 <span class="material-symbols-outlined text-[18px]">refresh</span>
 <span>Regeneate Key</span>
 </button>
@@ -156,15 +158,15 @@
 <div class="mt-6 p-4 bg-blue-500/5 border border-blue-500/20 rounded-lg flex gap-3">
 <span class="material-symbols-outlined text-blue-500">info</span>
 <p class="text-xs text-blue-700 dark:text-blue-500/80 leading-relaxed">
-                            Security Tip: Only reveal your AUTH TOKEN when you are in a secure environment. Your key is stored encrypted and should never be shared with unauthorized parties. Rotating your key will invalidate the current one immediately.
+                            Security Tip: Only reveal your AUTH TOKEN when you are in a secure environment. Your key is stored encrypted and should never be shared with unauthorized parties. Regenerating your key will invalidate the current one immediately.
                         </p>
 </div>
 </div>
 </div>
 </div>
 </main>
-<script src="./auth.js"></script>
-<!-- <script src="./main.js"></script> -->
+<!-- <script src="./auth.js"></script> -->
+
 <script>
 document.addEventListener("DOMContentLoaded", async () => {
     const user = await getCurrentUser();
@@ -176,14 +178,87 @@ document.addEventListener("DOMContentLoaded", async () => {
     document.getElementById("user-email").value=user.email;
     document.getElementById("user-name").value=user.name;
     document.getElementById("user-api").textContent=user.api_key;
-    
+    const apiSpan = document.getElementById("user-api");
+    const toggleBtn = document.getElementById("visibilty");
+    const copyBtn = document.getElementById("copyKey");
+    const regenBtn = document.getElementById("regenKey");
+    const eyeIcon = toggleBtn.querySelector("span");
+
+    let realApiKey = user.api_key;
+    let isVisible = false;
+
+    const maskKey = () => "•".repeat(32); // hide real length
+
+    // initial state
+    apiSpan.textContent = maskKey();
+
+    // TOGGLE VISIBILITY
+    toggleBtn.addEventListener("click", () => {
+        isVisible = !isVisible;
+        apiSpan.textContent = isVisible ? realApiKey : maskKey();
+        eyeIcon.textContent = isVisible ? "visibility_off" : "visibility";
+    });
+
+    // COPY KEY
+    copyBtn.addEventListener("click", async () => {
+        await navigator.clipboard.writeText(realApiKey);
+        const icon = copyBtn.querySelector("span");
+        icon.textContent = "check";
+        setTimeout(() => (icon.textContent = "content_copy"), 1200);
+    });
+
+    // REGENERATE KEY
+    regenBtn.addEventListener("click", async () => {
+        if (!confirm("This will invalidate your current API key. Continue?")) return;
+
+        try {
+            const res = await regenerateKey();
+
+            if (!res.ok) throw new Error("Failed to regenerate API key");
+
+            const data = await res.json();
+            realApiKey = data.api_key;
+
+            // Reset UI
+            isVisible = false;
+            apiSpan.textContent = maskKey();
+            eyeIcon.textContent = "visibility";
+
+            alert("API key regenerated successfully!");
+        } catch (err) {
+            console.error(err);
+            alert("Failed to regenerate API key");
+        }
+    });
+        
 });
 
-document.getElementById("logout-btn").addEventListener("click", () => {
-    // Clear auth/session (adjust based on your auth system)
-    localStorage.removeItem("currentUser"); // or sessionStorage.removeItem
-    // Redirect to login
-    window.location.href = "auth.html";
-});
+// document.getElementById("logout-btn").addEventListener("click", () => {
+//     // Clear auth/session (adjust based on your auth system)
+//     localStorage.removeItem("currentUser"); // or sessionStorage.removeItem
+//     // Redirect to login
+//     window.location.href = "auth.html";
+// });
 </script>
+<!-- <script>
+document.addEventListener("DOMContentLoaded", async () => {
+    const user = await getCurrentUser();
+    if (!user) {
+        window.location.href = "auth.html";
+        return;
+    }
+
+    document.getElementById("user-initials").textContent=user.name.replace(/\s+/g, '').slice(0, 2).toUpperCase();
+    document.getElementById("user-name").innerText = user.name;
+    
+    const profileBtn = document.getElementById("profile");
+
+    if (profileBtn) {
+        profileBtn.addEventListener("click", (e) => {
+        e.preventDefault(); // stop default anchor behavior
+        window.location.href = "profile.html";
+        });
+    }
+});
+</script> -->
 </body></html>

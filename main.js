@@ -114,12 +114,31 @@ async function refreshAccessToken() {
     return true;
 }
 
+async function regenerateKey() {
+    let token = getAccessToken();
+    if (!token) return null;
+
+    let res = await fetch(`${API_BASE}/api/regenerate-key`, {
+        method: "POST",
+        headers: { Authorization: `Bearer ${token}` },
+    });
+
+    return res;
+}
+
+async function getServers() {
+    let servers = await fetch(`${API_BASE}/api/servers`, {
+        method: "GET"
+    });
+    return servers;
+}
+
 /* ============================
    LOGOUT
 ============================ */
 function logout() {
     clearTokens();
-    window.location.href = "auth.html";
+    window.location.href = "home.html";
 }
 
 /* ============================
@@ -150,7 +169,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 await register(name, email, password);
             }
 
-            window.location.href = "home.html";
+            window.location.href = "LoggedIn.html";
         } catch (err) {
             alert(err.message);
         }
